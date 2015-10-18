@@ -33,15 +33,16 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/rkp">Rules</a></li>
                 </ul>
-                 <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
-
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input id="password" type="password" class="form-control" name="password" value="" placeholder="Protocol">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Login</button>
-                   </form>
+                <form id="signout" class="navbar-form navbar-right" role="form" method="post" action="/logout">
+                    <button type="submit" class="btn btn-primary">Logout</button>
+                </form>
+                <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input id="password" type="password" class="form-control" name="password" value="" placeholder="Protocol">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Run protocol</button>
+                 </form>
             </div>
         </div>
     </nav>

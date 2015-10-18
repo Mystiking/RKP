@@ -30,14 +30,30 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-brand-centered">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Login</a></li>
                     <li><a href="/rkp">Rules</a></li>
+                </ul>
+                 <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input id="password" type="password" class="form-control" name="password" value="" placeholder="Protocol">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Login</button>
+                   </form>
             </div>
         </div>
     </nav>
 
+    <center>
+    <form name="login" method="post" action="/login_user">
+        <input type="text" placeholder="Username" name="username">
+        <input type="password" placeholder="Password" name="password">
+        <input type="submit">
+    </form>
 
-
+    <a href="/signup"> Go to sign-up </a>
+    </center>
 
 </body>
 </html>

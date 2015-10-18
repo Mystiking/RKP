@@ -10,16 +10,33 @@ app.secret_key = 'Ultra secret invisible super secret key'
 db = SQLAlchemy(app)
 
 
+@app.route('/', methods=['POST'])
+def new_msg():
+    if 'name' not in session:
+        return redirect('/login_user')
+    msg = request.form['message']
+    db.session.add(Message(session['name'], msg))
+    db.session.commit()
+    return redirect('/')
+
+
 @app.route('/', methods=['GET'])
 def list_members():
+    posts = db.session.query(Message).order_by(Message.index).all()
+    while len(posts) > 10:
+        db.session.delete(posts[0])
+        posts = posts[1:]
+        db.session.commit()
     temp = db.session.query(Member).order_by(Member.rkp).all()
-    members = []
     size = len(temp)
     for m in temp:
         db.session.query(Member).filter(m.index == Member.index).first().pos = size
         size -= 1
     members = db.session.query(Member).order_by(Member.pos).all()
-    return render_template('startPage.html', members=members)
+    if 'name' in session:
+        return render_template('startPage.html', members=members, posts=posts, name=session['name'], unknown=0)
+    else:
+        return render_template('startPage.html', members=members, posts=posts, name='no name', unknown=1)
 
 
 @app.route('/rkp', methods=['GET'])
@@ -62,6 +79,39 @@ def add_member():
     db.session.commit()
     members = db.session.query(Member).order_by(Member.pos).all()
     return render_template('admin.html', members=members)
+
+
+@app.route('/login_user', methods=['GET', 'POST'])
+def log_in_user():
+    if request.method == 'POST':
+        name = request.form['username']
+        password = request.form['password']
+        user = db.session.query(User).filter(User.name == name).first()
+        if user and user.check_pass(password):
+            session['name'] = name
+            return redirect('/')
+    return render_template('login.html',
+                           backname='Back to signup',
+                           backlink='signup.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def sign_up():
+    if request.method == 'POST':
+        name = request.form['username']
+        password = request.form['password']
+        if not db.session.query(User).filter(User.name == name).first():
+            db.session.add(User(name, password))
+            db.session.commit()
+            return redirect('/login_user')
+    return render_template('signup.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    if 'name' in session:
+        del session['name']
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(port=1315, debug=True)

@@ -33,50 +33,93 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/rkp">Rules</a></li>
                 </ul>
-                 <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
-
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input id="password" type="password" class="form-control" name="password" value="" placeholder="Protocol">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Login</button>
-                   </form>
+                <form id="signout" class="navbar-form navbar-right" role="form" method="post" action="/logout">
+                    <button type="submit" class="btn btn-primary">Logout</button>
+                </form>
+                <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input id="password" type="password" class="form-control" name="password" value="" placeholder="Protocol">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Run protocol</button>
+                 </form>
             </div>
         </div>
     </nav>
 
 
-
-<FONT color="white">
-<div class="container">
-        <div class="row" style="margin-top: 50px">
-            <div class="container col-md-10">
-                <h1> RKP Points </h1>
-                <table class="table" id="members">
-                    <thead>
-                          <tr>
-                               <th width=60%>Name</th>
-                               <th>Latest change</th>
-                               <th>Total RKP</th>
-                               <th>Position</th>
-                          </tr>
-                    </thead>
-                    <tbody>
-                    {% for m in members %}
-                       <tr>
-                           <td> {{ m.name }} </td>
-                           <td> {{ m.change }} </td>
-                           <td> {{ m.rkp }} </td>
-                           <td> {{ m.pos }} </td>
-                       </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="container">
+                    <div class="row" style="margin-top: 50px">
+                        <div class="container col-md-4">
+                            <FONT color="white">
+                            <h1> Chat </h1>
+                            </FONT>
+                            <form name="chat" method="post" action="/">
+                                    <input type="text" placeholder="" name="message">
+                                    <input type="submit">
+                                    <FONT color="white">
+                                    {% if unknown == 0 %}
+                                    <h3>Logged in as {{ name }} </h3>
+                                    {% else %}
+                                    <h3>Not logged in yet</h3>
+                                    {% endif %}
+                                    </FONT>
+                                </form>
+                                <FONT color="white">
+                                <table>
+                                {% for post in posts %}
+                                <tr>
+                                    {% if post.name != name %}
+                                    <td>{{ post.name }}</td>
+                                    {% else %}
+                                    <td> me </td>
+                                    {% endif %}
+                                    <td> <b>  --  </b> </td>
+                                    <td> {{ post.msg }} </td>
+                                </tr>
+                                {% endfor %}
+                                </table>
+                                </FONT>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <FONT color="white">
+                <div class="container">
+                        <div class="row" style="margin-top: 50px">
+                            <div class="container col-md-8">
+                                <h1> RKP Points </h1>
+                                <table class="table" id="members">
+                                    <thead>
+                                          <tr>
+                                               <th width=60%>Name</th>
+                                               <th>Latest change</th>
+                                               <th>Total RKP</th>
+                                               <th>Position</th>
+                                          </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for m in members %}
+                                       <tr>
+                                           <td> {{ m.name }} </td>
+                                           <td> {{ m.change }} </td>
+                                           <td> {{ m.rkp }} </td>
+                                           <td> {{ m.pos }} </td>
+                                       </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </FONT>
             </div>
         </div>
     </div>
-</FONT>
 
 </body>
 </html>
