@@ -112,7 +112,6 @@ def go_to():
     name = request.form['name'].lower()
     pos = int(request.form['position'])
     key = int(request.form['id'])
-    html = '/members/' + name + '.html'
     print(pos)
     if pos == 1:
         picture = '/static/css/medlemmer/' + name + '/gold_border_' + name + '.png'
@@ -122,7 +121,7 @@ def go_to():
         picture = '/static/css/medlemmer/' + name + '/' + name + '.png'
     name = name[0].upper() + name[1:]
     messages = db.session.query(Message).filter(Message.key == key).order_by(Message.index).all()
-    return render_template(html, messages=messages, name=name, picture=picture)
+    return render_template('/members/member.html', messages=messages, name=name, picture=picture)
 
 
 
