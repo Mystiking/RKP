@@ -9,6 +9,7 @@ class Member(db.Model):
     index = db.Column(db.Integer, primary_key=True)
     rkp = db.Column(db.Integer)
     name = db.Column(db.String(140))
+    latest = db.Column(db.String(140))
     change = db.Column(db.Integer)
     pos = db.Column(db.Integer)
 
@@ -17,6 +18,7 @@ class Member(db.Model):
         self.rkp = rkp
         self.change = 0
         self.pos = 0
+        self.latest = 'None given'
 
 
 class Message(db.Model):
@@ -24,10 +26,13 @@ class Message(db.Model):
     index = db.Column(db.Integer, primary_key=True)
     msg = db.Column(db.String(140))
     name = db.Column(db.String(140))
+    key = db.Column(db.Integer)
+    rkp = db.Column(db.Integer)
 
-    def __init__(self, name, msg):
+    def __init__(self, name, msg, key):
         self.name = name
         self.msg = msg
+        self.key = key
 
 
 class User(db.Model):

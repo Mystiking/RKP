@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="icon" href="/static/css/dragon-fav.png">
     <title>RKP</title>
     <style></style>
 </head>
@@ -33,9 +34,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/rkp">Rules</a></li>
                 </ul>
-                <form id="signout" class="navbar-form navbar-right" role="form" method="post" action="/logout">
-                    <button type="submit" class="btn btn-primary">Logout</button>
-                </form>
                 <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -50,15 +48,17 @@
 <FONT color="white">
 <div class="container">
         <div class="row" style="margin-top: 50px">
-            <div class="container col-md-10">
+            <div class="container col-md-12">
                 <h1> Give points </h1>
                 <table class="table" id="members">
                     <thead>
                           <tr>
-                               <th width=60%>Name</th>
-                               <th>RKP to be given</th>
-                               <th>Give</th>
-                               <th>RKP</th>
+                               <th width=10%>Name</th>
+                               <th width=50%>Reason</th>
+                               <th>Points</th>
+                               <th>Add</th>
+                               <th>Total</th>
+                               <th>Delete</th>
                           </tr>
                     </thead>
                     <tbody>
@@ -69,6 +69,9 @@
                            </td>
                            <form id="m{{ m.index }}" method="post" action="/give_rkp">
                            <td>
+                               <input id="reason" type="text" class="form-control" name="reason" value="" placeholder="Reason">
+                           </td>
+                           <td>
                                <input id="amount" type="text" class="form-control" name="amount" value="" placeholder="Amount">
                                <input id="hidden" type="hidden" value="{{ m.index }}" name="hidden">
                            </td>
@@ -78,6 +81,12 @@
                            </form>
                            <td>
                                {{ m.rkp }}
+                           </td>
+                           <td>
+                               <form id="d{{ m.index }}" method="post" action="/delete_member">
+                                   <input id="del" type="hidden" name="del" value="{{ m.index }}">
+                                   <button type="submit" class="btn btn-primary">Delete</button>
+                               </form>
                            </td>
                        </tr>
                     {% endfor %}

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="icon" href="/static/css/dragon-fav.png">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <title>RKP</title>
@@ -33,9 +34,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/rkp">Rules</a></li>
                 </ul>
-                <form id="signout" class="navbar-form navbar-right" role="form" method="post" action="/logout">
-                    <button type="submit" class="btn btn-primary">Logout</button>
-                </form>
                 <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -51,55 +49,20 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <div class="container">
-                    <div class="row" style="margin-top: 50px">
-                        <div class="container col-md-4">
-                            <FONT color="white">
-                            <h1> Chat </h1>
-                            </FONT>
-                            <form name="chat" method="post" action="/">
-                                    <input type="text" placeholder="" name="message">
-                                    <input type="submit">
-                                    <FONT color="white">
-                                    {% if unknown == 0 %}
-                                    <h3>Logged in as {{ name }} </h3>
-                                    {% else %}
-                                    <h3>Not logged in yet</h3>
-                                    {% endif %}
-                                    </FONT>
-                                </form>
-                                <FONT color="white">
-                                <table>
-                                {% for post in posts %}
-                                <tr>
-                                    {% if post.name != name %}
-                                    <td>{{ post.name }}</td>
-                                    {% else %}
-                                    <td> me </td>
-                                    {% endif %}
-                                    <td> <b>  --  </b> </td>
-                                    <td> {{ post.msg }} </td>
-                                </tr>
-                                {% endfor %}
-                                </table>
-                                </FONT>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
                 <FONT color="white">
                 <div class="container">
                         <div class="row" style="margin-top: 50px">
-                            <div class="container col-md-8">
-                                <h1> RKP Points </h1>
+                            <div class="container col-md-12">
+                                <h1> Rus Kill Points </h1>
                                 <table class="table" id="members">
                                     <thead>
                                           <tr>
-                                               <th width=60%>Name</th>
+                                               <th>Name</th>
                                                <th>Latest change</th>
-                                               <th>Total RKP</th>
+                                               <th width=50%>Reason</th>
+                                               <th>RKP</th>
                                                <th>Position</th>
+                                               <th>More</th>
                                           </tr>
                                     </thead>
                                     <tbody>
@@ -107,8 +70,17 @@
                                        <tr>
                                            <td> {{ m.name }} </td>
                                            <td> {{ m.change }} </td>
+                                           <td> {{ m.latest }} </td>
                                            <td> {{ m.rkp }} </td>
                                            <td> {{ m.pos }} </td>
+                                           <td>
+                                                <form id="m{{ m.index }}" method="post" action="/go_to">
+                                                    <input id="name" type="hidden" name="name" value="{{ m.name }}">
+                                                    <input id="id" type="hidden" name="id" value="{{ m.index }}">
+                                                    <input id="position" type="hidden" name="position" value="{{ m.pos }}">
+                                                    <button type="submit" class="btn btn-primary">More</button>
+                                               </form>
+                                           </td>
                                        </tr>
                                     {% endfor %}
                                     </tbody>

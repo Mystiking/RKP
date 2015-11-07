@@ -10,23 +10,8 @@ app.secret_key = 'Ultra secret invisible super secret key'
 db = SQLAlchemy(app)
 
 
-@app.route('/', methods=['POST'])
-def new_msg():
-    if 'name' not in session:
-        return redirect('/login_user')
-    msg = request.form['message']
-    db.session.add(Message(session['name'], msg))
-    db.session.commit()
-    return redirect('/')
-
-
 @app.route('/', methods=['GET'])
 def list_members():
-    posts = db.session.query(Message).order_by(Message.index).all()
-    while len(posts) > 10:
-        db.session.delete(posts[0])
-        posts = posts[1:]
-        db.session.commit()
     temp = db.session.query(Member).order_by(Member.rkp).all()
     size = len(temp)
     for m in temp:
@@ -34,9 +19,9 @@ def list_members():
         size -= 1
     members = db.session.query(Member).order_by(Member.pos).all()
     if 'name' in session:
-        return render_template('startPage.html', members=members, posts=posts, name=session['name'], unknown=0)
+        return render_template('startPage.html', members=members, unknown=0)
     else:
-        return render_template('startPage.html', members=members, posts=posts, name='no name', unknown=1)
+        return render_template('startPage.html', members=members, unknown=1)
 
 
 @app.route('/rkp', methods=['GET'])
@@ -57,11 +42,17 @@ def log_in():
 @app.route('/give_rkp', methods=['GET', 'POST'])
 def give():
     id = int(request.form['hidden'])
+    reason = request.form['reason']
     rkp = int(request.form['amount'])
     members = db.session.query(Member).order_by(Member.pos).all()
     db.session.query(Member).filter(Member.index == id).first().rkp += rkp
+    db.session.query(Member).filter(Member.index == id).first().latest = reason
+    db.session.query(Member).filter(Member.index == id).first().change = rkp
+    message = Message(db.session.query(Member).filter(Member.index == id).first().name, reason, id)
+    message.rkp = rkp
+    db.session.add(message)
     db.session.commit()
-    print(id, rkp)
+    db.session.flush()
     return render_template('admin.html', members=members)
 
 
@@ -112,6 +103,35 @@ def logout():
     if 'name' in session:
         del session['name']
     return redirect('/')
+
+
+@app.route('/go_to', methods=['POST', 'GET'])
+def go_to():
+    name = request.form['name'].lower()
+    pos = int(request.form['position'])
+    key = int(request.form['id'])
+    html = '/members/' + name + '.html'
+    print(pos)
+    if pos == 1:
+        picture = '/static/css/medlemmer/' + name + '/gold_border_' + name + '.png'
+    elif pos == 2:
+        picture = '/static/css/medlemmer/' + name + '/silver_border_' + name + '.png'
+    else:
+        picture = '/static/css/medlemmer/' + name + '/' + name + '.png'
+    name = name[0].upper() + name[1:]
+    messages = db.session.query(Message).filter(Message.key == key).order_by(Message.index).all()
+    return render_template(html, messages=messages, name=name, picture=picture)
+
+
+
+@app.route('/delete_member', methods=['POST', 'GET'])
+def delete_member():
+    index = int(request.form['del'])
+    db.session.query(Member).filter(Member.index == index).delete()
+    db.session.commit()
+    members = db.session.query(Member).order_by(Member.pos).all()
+    return render_template('admin.html', members=members)
+
 
 if __name__ == '__main__':
     app.run(port=1315, debug=True)
