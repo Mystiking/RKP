@@ -6,6 +6,8 @@ import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SERVER_NAME'] = 'guldda.me'
+app.config['DEBGUG'] = False
 app.secret_key = 'Ultra secret invisible super secret key'
 db = SQLAlchemy(app)
 
@@ -134,4 +136,4 @@ def delete_member():
 
 
 if __name__ == '__main__':
-    app.run(port=1315, debug=True)
+    app.run(host='0.0.0.0', port=80)
