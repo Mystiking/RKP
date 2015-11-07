@@ -55,6 +55,14 @@ def give():
     db.session.add(message)
     db.session.commit()
     db.session.flush()
+    log = open('log.txt', 'w')
+    for m in members:
+        log.write(m.name + ' :\n')
+        messages = db.session.query(Message).order_by(Message.index).all()
+        for msg in messages:
+            if msg.key == m.index:
+                log.write("Message: " + msg.msg + '\n')
+    log.close()
     return render_template('admin.html', members=members)
 
 
