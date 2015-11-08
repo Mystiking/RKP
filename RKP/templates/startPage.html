@@ -12,7 +12,7 @@
 </head>
 
 
-<body background="/static/css/dragon-3.png" >
+<body background="/static/css/matrix__wallpaper.jpg" >
 
 <nav class="navbar navbar-default" role="navigation">
             <div class="container">
@@ -53,19 +53,24 @@
                 <div class="container">
                         <div class="row" style="margin-top: 50px">
                             <div class="container col-md-12">
-                                <h1> Rus Kill Points </h1>
-                                <table class="table" id="members">
-                                    <thead>
-                                          <tr>
+                                      <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                          <h1>
+                                            Rus Kill Points
+                                          </h1>
+                                        <table class="table">
+                                          <thead>
+                                            <tr>
                                                <th>Name</th>
                                                <th>Latest change</th>
                                                <th width=50%>Reason</th>
                                                <th>RKP</th>
                                                <th>Position</th>
                                                <th>More</th>
-                                          </tr>
-                                    </thead>
-                                    <tbody>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          <tbody>
                                     {% for m in members %}
                                        <tr>
                                            <td> {{ m.name }} </td>
@@ -84,8 +89,10 @@
                                        </tr>
                                     {% endfor %}
                                     </tbody>
-                                </table>
-                            </div>
+
+                                        </table>
+                                      </div>
+                                </div>
                         </div>
                     </div>
                 </FONT>
