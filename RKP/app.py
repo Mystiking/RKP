@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask.ext.sqlalchemy import SQLAlchemy
 from schema import *
-import os
-import json
+import datetime, os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -55,7 +54,14 @@ def give():
     db.session.add(message)
     db.session.commit()
     db.session.flush()
-    log = open('log.txt', 'w')
+
+    dir = 'logs'
+
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+    path = str(datetime.datetime.now())[0:19] + '.txt'
+    log = open(os.path.join(path, path), 'w')
     for m in members:
         log.write(m.name + ' :\n')
         messages = db.session.query(Message).order_by(Message.index).all()
