@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!<DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
 </head>
 
 
-<body background="/static/css/beer-astro.jpg" >
+<body background="/static/css/bg_cont_2.jpg" >
 
 <nav class="navbar navbar-default" role="navigation">
             <div class="container">
@@ -39,62 +39,77 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="password" type="password" class="form-control" name="password" value="" placeholder="Protocol">
                     </div>
-                    <button type="submit" class="btn btn-primary">Run protocol</button>
+                    <button type="submit" class="btn btn-primary">Administrer point</button>
                  </form>
             </div>
         </div>
     </nav>
-<FONT color="white">
+
+
+
 <div class="container">
-        <div class="row" style="margin-top: 50px">
-            <div class="container col-md-12">
-                <h1> Give points </h1>
-                <table class="table" id="members">
-                    <thead>
-                          <tr>
-                               <th width=10%>Name</th>
-                               <th width=50%>Reason</th>
-                               <th>Points</th>
-                               <th>Add</th>
-                               <th>Total</th>
-                               <th>Delete</th>
-                          </tr>
-                    </thead>
-                    <tbody>
-                    {% for m in members %}
-                       <tr>
-                           <td>
-                               {{ m.name }}
-                           </td>
-                           <form id="m{{ m.index }}" method="post" action="/give_rkp">
-                           <td>
-                               <input id="reason" type="text" class="form-control" name="reason" value="" placeholder="Reason">
-                           </td>
-                           <td>
-                               <input id="amount" type="text" class="form-control" name="amount" value="" placeholder="Amount">
-                               <input id="hidden" type="hidden" value="{{ m.index }}" name="hidden">
-                           </td>
-                               <td>
-                                   <button type="submit" class="btn btn-primary">RKP</button>
-                               </td>
-                           </form>
-                           <td>
-                               {{ m.rkp }}
-                           </td>
-                           <td>
-                               <form id="d{{ m.index }}" method="post" action="/delete_member">
-                                   <input id="del" type="hidden" name="del" value="{{ m.index }}">
-                                   <button type="submit" class="btn btn-primary">Delete</button>
-                               </form>
-                           </td>
-                       </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+        <div class="row">
+            <div class="col-md-4">
+                <FONT color="white">
+                <div class="container">
+                        <div class="row" style="margin-top: 50px">
+                            <div class="container col-md-12">
+                                      <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                          <h1>
+                                            Rus Kill Point
+                                          </h1>
+                                        <table class="table" id="members">
+                                          <thead>
+                                              <tr>
+                                                   <th width=10%>Name</th>
+                                                   <th width=50%>Reason</th>
+                                                   <th>Points</th>
+                                                   <th>Add</th>
+                                                   <th>Total</th>
+                                                   <th>Delete</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                            {% for m in members %}
+                                               <tr>
+                                                   <td>
+                                                       {{ m.name }}
+                                                   </td>
+                                                   <form id="m{{ m.index }}" method="post" action="/give_rkp">
+                                                   <td>
+                                                       <input id="reason" type="text" class="form-control" name="reason" value="" placeholder="Reason">
+                                                   </td>
+                                                   <td>
+                                                       <input id="amount" type="text" class="form-control" name="amount" value="" placeholder="Amount">
+                                                       <input id="hidden" type="hidden" value="{{ m.index }}" name="hidden">
+                                                   </td>
+                                                       <td>
+                                                           <button type="submit" class="btn btn-primary">RKP</button>
+                                                       </td>
+                                                   </form>
+                                                   <td>
+                                                       {{ m.rkp }}
+                                                   </td>
+                                                   <td>
+                                                       <form id="d{{ m.index }}" method="post" action="/delete_member">
+                                                           <input id="del" type="hidden" name="del" value="{{ m.index }}">
+                                                           <button type="submit" class="btn btn-primary">Delete</button>
+                                                       </form>
+                                                   </td>
+                                               </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                </div>
+                        </div>
+                    </div>
+                </FONT>
             </div>
         </div>
     </div>
-</FONT>
+
 <FONT color="white">
 <div class="container">
         <div class="row" style="margin-top: 50px">
