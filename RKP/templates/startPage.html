@@ -32,14 +32,14 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-brand-centered">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/rkp">Rules</a></li>
+                    <li><a href="/rkp">Regler</a></li>
                 </ul>
                 <form id="signin" class="navbar-form navbar-right" role="form" method="post" action="/login">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="password" type="password" class="form-control" name="password" value="" placeholder="Protocol">
                     </div>
-                    <button type="submit" class="btn btn-primary">Run protocol</button>
+                    <button type="submit" class="btn btn-primary">Administrer point</button>
                  </form>
             </div>
         </div>
@@ -56,17 +56,17 @@
                                       <div class="panel panel-default">
                                         <div class="panel-heading">
                                           <h1>
-                                            Rus Kill Points
+                                            Rus Kill Point
                                           </h1>
                                         <table class="table">
                                           <thead>
                                             <tr>
-                                               <th>Name</th>
-                                               <th>Latest change</th>
-                                               <th width=50%>Reason</th>
+                                               <th>Navn</th>
+                                               <th>Sidste ændring</th>
+                                               <th width=50%>Begrundelse</th>
                                                <th>RKP</th>
                                                <th>Position</th>
-                                               <th>More</th>
+                                               <th>Mere</th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -83,7 +83,7 @@
                                                     <input id="name" type="hidden" name="name" value="{{ m.name }}">
                                                     <input id="id" type="hidden" name="id" value="{{ m.index }}">
                                                     <input id="position" type="hidden" name="position" value="{{ m.pos }}">
-                                                    <button type="submit" class="btn btn-primary">More</button>
+                                                    <button type="submit" class="btn btn-primary">Mere</button>
                                                </form>
                                            </td>
                                        </tr>
