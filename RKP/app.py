@@ -36,7 +36,7 @@ def log_in():
     if password != 'RKPdealer':
         return redirect('/')
     else:
-        members = db.session.query(Member).order_by(Member.pos).all()
+        members = db.session.query(Member).order_by(Member.name).all()
         return render_template('admin.html', members=members)
 
 
