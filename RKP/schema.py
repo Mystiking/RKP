@@ -18,7 +18,7 @@ class Member(db.Model):
         self.rkp = rkp
         self.change = 0
         self.pos = 0
-        self.latest = 'None given'
+        self.latest = 'Ingen begrundelse'
 
 
 class Message(db.Model):
