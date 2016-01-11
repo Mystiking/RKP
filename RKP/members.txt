@@ -1,4 +1,3 @@
-Lasse
 Ramo
 Alex
 Max
@@ -19,3 +18,4 @@ Mål
 Troels
 Henrik
 Frederik
+Lasse
