@@ -27,7 +27,7 @@ def list_members():
 @app.route('/load_members', methods=['GET'])
 def load_m():
     names = db.session.query(Member).order_by(Member.pos).all()
-    with open('members.txt') as fp
+    with open('members.txt') as fp:
         for line in fp:
             flag = 0
             new_member = Member(line, 0)
