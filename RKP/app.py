@@ -24,7 +24,7 @@ def list_members():
     else:
         return render_template('startPage.html', members=members, unknown=1)
 
-@app.route('/load_members', methods=['GET'])
+@app.route('/load_members', methods=['GET', 'POST'])
 def load_m():
     names = db.session.query(Member).order_by(Member.pos).all()
     with open('members.txt') as fp:
