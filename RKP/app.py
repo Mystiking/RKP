@@ -32,7 +32,7 @@ def load_m():
             flag = 0
             new_member = Member(line, 0)
             for n in names:
-                if n == line:
+                if n.lower() == line.lower():
                     flag = 1
             if flag == 0:
                 db.session.add(new_member)
