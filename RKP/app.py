@@ -24,6 +24,22 @@ def list_members():
     else:
         return render_template('startPage.html', members=members, unknown=1)
 
+@app.route('/load_members', methods=['GET'])
+def load_m():
+    names = db.session.query(Member).order_by(Member.pos).all()
+    with open('members.txt') as fp
+        for line in fp:
+            flag = 0
+            new_member = Member(line, 0)
+            for n in names:
+                if n == line:
+                    flag = 1
+            if flag == 0:
+                db.session.add(new_member)
+    db.session.commit()
+    db.session.flush()
+    members = db.session.query(Member).order_by(Member.name).all()
+    return render_template('admin.html', members=members)
 
 @app.route('/rkp', methods=['GET'])
 def follow_the_rules():
