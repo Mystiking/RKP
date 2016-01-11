@@ -102,6 +102,8 @@ def add_member():
     db.session.flush()
     db.session.commit()
     members = db.session.query(Member).order_by(Member.pos).all()
+    with open('members.txt', 'a') as f:
+        f.write(name)
     return render_template('admin.html', members=members)
 
 
