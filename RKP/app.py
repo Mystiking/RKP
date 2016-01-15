@@ -32,7 +32,7 @@ def load_m():
             flag = 0
             new_member = Member(line, 0)
             for n in names:
-                if n == line:
+                if n.lower() == line.lower():
                     flag = 1
             if flag == 0:
                 db.session.add(new_member)
@@ -103,7 +103,7 @@ def add_member():
     db.session.commit()
     members = db.session.query(Member).order_by(Member.pos).all()
     with open('members.txt', 'a') as f:
-        f.write(name)
+        f.write(name + '\n')
     return render_template('admin.html', members=members)
 
 
