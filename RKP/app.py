@@ -59,11 +59,12 @@ def log_in():
 @app.route('/give_list_rkp', methods=['GET', 'POST'])
 def give_list():
     print("Anything?")
-    names = (request.form['names'].split(", "))
+    names = (request.form['names'])
     msg = request.form['reason']
     rkp = int(request.form['amount'])
     members = db.session.query(Member).all()
     print(names)
+    names = names.split(", ")
     for n in names:
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
         db.session.query(Member).filter(Member.name == n).first().latest = msg
