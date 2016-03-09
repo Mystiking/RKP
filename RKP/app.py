@@ -69,7 +69,7 @@ def give_list():
     print(names)
     names = names.split(", ")
     for n in names:
-        print("Entered for loop...")
+        print("Entered for loop with name : " + n)
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
         print("rkp sat")
         db.session.query(Member).filter(Member.name == n).first().latest = msg
