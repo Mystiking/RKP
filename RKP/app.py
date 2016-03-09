@@ -60,9 +60,11 @@ def log_in():
 def give_list():
     print("Anything?")
     names = (request.form['names'])
-    print("Names?")
+    print("Names: " + names)
     msg = request.form['reason']
+    print(msg)
     rkp = int(request.form['amount'])
+    print(rkp)
     members = db.session.query(Member).all()
     print(names)
     names = names.split(", ")
