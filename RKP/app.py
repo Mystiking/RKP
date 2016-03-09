@@ -71,11 +71,17 @@ def give_list():
     for n in names:
         print("Entered for loop...")
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
+        print("rkp sat")
         db.session.query(Member).filter(Member.name == n).first().latest = msg
+        print("msg sat")
         db.session.query(Member).filter(Member.name == n).first().change = rkp
+        print("change sat")
         message = Message(n, msg, db.session.query(Member).filter(Member.name == n).index)
+        print("created message")
         message.rkp = rkp
+        print("added rkp to message")
         db.session.add(message)
+        print("added message to db")
     db.session.commit()
     db.session.flush()
     print("Starting logging...")
