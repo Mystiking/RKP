@@ -14,21 +14,9 @@ db = SQLAlchemy(app)
 @app.route('/', methods=['GET'])
 def list_members():
     temp = db.session.query(Member).order_by(Member.rkp).all()
-    grps = {}
-    keys = []
     position = 1
     for m in temp:
-        key = m.RKP
-        if key not in grps:
-            grps[key] = []
-        if key not in keys:
-            key.append(key);
-        grps[key].append(m.index);
-    while keys:
-        mx = max(keys);
-        keys.remove(max(keys))
-        for x in grps[mx]:
-            db.session.query(Member).filter(x.index = Member.index).first().pos = position
+        db.session.query(Member).filter(m.index == Member.index).first().pos = position
         position += 1
     members = db.session.query(Member).order_by(Member.pos).all()
     if 'name' in session:
