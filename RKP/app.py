@@ -55,8 +55,10 @@ def log_in():
         members = db.session.query(Member).order_by(Member.name).all()
         return render_template('admin.html', members=members)
 
+
 @app.route('/give_list_rkp', methods=['GET', 'POST'])
 def give_list():
+    print("Anything?")
     names = (request.form['names'].split(", "))
     msg = request.form['reason']
     rkp = int(request.form['amount'])
