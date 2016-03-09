@@ -61,6 +61,7 @@ def give_list():
     msg = request.form['reason']
     rkp = int(request.form['amount'])
     members = db.session.query(Member).all()
+    print(names)
     for n in names:
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
         db.session.query(Member).filter(Member.name == n).first().latest = msg
