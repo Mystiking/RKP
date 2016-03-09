@@ -63,7 +63,7 @@ def give_list():
     print("Names: " + names)
     msg = request.form['reason']
     print(msg)
-    rkp = int(request.form['amount'])
+    rkp = int(request.form['rkp'])
     print(rkp)
     members = db.session.query(Member).all()
     print(names)
