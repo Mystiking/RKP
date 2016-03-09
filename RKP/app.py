@@ -69,6 +69,7 @@ def give_list():
     print(names)
     names = names.split(", ")
     for n in names:
+        print("Entered for loop...")
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
         db.session.query(Member).filter(Member.name == n).first().latest = msg
         db.session.query(Member).filter(Member.name == n).first().change = rkp
@@ -77,7 +78,7 @@ def give_list():
         db.session.add(message)
     db.session.commit()
     db.session.flush()
-
+    print("Starting logging...")
     dir = 'logs'
 
     if not os.path.exists(dir):
