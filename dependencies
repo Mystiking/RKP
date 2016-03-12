@@ -1,0 +1,5 @@
+For running this, you need:
+  1. A server (we are simply 0-throwing the website)
+  2. Pyhton 3.3 or newer
+  3. Flask (Easiest to install using pip3)
+  4. Flask-SQLAlchemy (Same as with flask)
