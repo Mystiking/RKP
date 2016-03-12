@@ -14,10 +14,10 @@ db = SQLAlchemy(app)
 @app.route('/', methods=['GET'])
 def list_members():
     temp = db.session.query(Member).order_by(Member.rkp).all()
-    position = 1
+    position = len(temp)
     for m in temp:
         db.session.query(Member).filter(m.index == Member.index).first().pos = position
-        position += 1
+        position -= 1
     members = db.session.query(Member).order_by(Member.pos).all()
     if 'name' in session:
         return render_template('startPage.html', members=members, unknown=0)
@@ -70,7 +70,7 @@ def give_list():
     names = names.split(", ")
     for n in names:
         print("Entered for loop with name : " + n)
-        print(db.session.query(Member).filter(Member.name == n).first().rkp)
+        
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
         print("rkp sat")
         db.session.query(Member).filter(Member.name == n).first().latest = msg
@@ -93,7 +93,7 @@ def give_list():
 
     path = str(datetime.datetime.now())[0:19] + '.txt'
     log = open(os.path.join(dir, path), 'w')
-    members = db.session.query(Members).order_by(Member.name).all()
+    members = db.session.query(Member).order_by(Member.name).all()
     for m in members:
         log.write(m.name + ' :\n')
         messages = db.session.query(Message).order_by(Message.index).all()
