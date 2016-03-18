@@ -5,8 +5,6 @@ import datetime, os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SERVER_NAME'] = 'guldda.me'
-app.config['DEBGUG'] = False
 app.secret_key = 'Ultra secret invisible super secret key'
 db = SQLAlchemy(app)
 
@@ -58,34 +56,20 @@ def log_in():
 
 @app.route('/give_list_rkp', methods=['GET', 'POST'])
 def give_list():
-    print("Anything?")
     names = (request.form['names'])
-    print("Names: " + names)
     msg = request.form['reason']
-    print(msg)
     rkp = int(request.form['rkp'])
-    print(rkp)
     members = db.session.query(Member).all()
-    print(names)
     names = names.split(", ")
     for n in names:
-        print("Entered for loop with name : " + n)
-        
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
-        print("rkp sat")
         db.session.query(Member).filter(Member.name == n).first().latest = msg
-        print("msg sat")
         db.session.query(Member).filter(Member.name == n).first().change = rkp
-        print("change sat")
         message = Message(n, msg, db.session.query(Member).filter(Member.name == n).index)
-        print("created message")
         message.rkp = rkp
-        print("added rkp to message")
         db.session.add(message)
-        print("added message to db")
     db.session.commit()
     db.session.flush()
-    print("Starting logging...")
     dir = 'logs'
 
     if not os.path.exists(dir):
@@ -217,4 +201,4 @@ def delete_member():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(port=1315, debug=True)
