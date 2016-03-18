@@ -100,16 +100,6 @@ def load_m():
     members = db.session.query(Member).order_by(Member.name).all()
     return render_template('admin.html', members=members)
 
-
-def find_ids(names):
-    ids = []
-    members = db.session.query(Member).all()
-    for n in names:
-        for m in members:
-            if m.name == n:
-                ids.append(m.index)
-    return ids
-
 @app.route('/give_list_rkp', methods=['GET', 'POST'])
 def give_list():
     names = (request.form['names'])
@@ -117,8 +107,6 @@ def give_list():
     rkp = int(request.form['rkp'])
     members = db.session.query(Member).all()
     names = names.split(", ")
-    print(names)
-    print(find_ids(names))
     for n in names:
         print(n)
         for m in db.session.query(Member).all():
