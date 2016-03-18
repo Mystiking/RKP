@@ -13,7 +13,10 @@ db = SQLAlchemy(app)
 def list_members():
     temp = db.session.query(Member).order_by(Member.rkp.desc()).all()
     position = 1
-    max_points = db.session.query(Member).filter(temp[0].index == Member.index).first().rkp
+    try:
+        max_points = db.session.query(Member).filter(temp[0].index == Member.index).first().rkp
+    except:
+        pass
     for m in temp:
         current = db.session.query(Member).filter(m.index == Member.index).first().rkp
         if (current < max_points):
@@ -86,9 +89,9 @@ def load_m():
     with open('members.txt') as fp:
         for line in fp:
             flag = 0
-            new_member = Member(line, 0)
+            new_member = Member(line[:-1], 0)
             for n in names:
-                if n.lower() == line.lower():
+                if n.name.lower() == line.lower():
                     flag = 1
             if flag == 0:
                 db.session.add(new_member)
@@ -97,6 +100,16 @@ def load_m():
     members = db.session.query(Member).order_by(Member.name).all()
     return render_template('admin.html', members=members)
 
+
+def find_ids(names):
+    ids = []
+    members = db.session.query(Member).all()
+    for n in names:
+        for m in members:
+            if m.name == n:
+                ids.append(m.index)
+    return ids
+
 @app.route('/give_list_rkp', methods=['GET', 'POST'])
 def give_list():
     names = (request.form['names'])
@@ -104,15 +117,21 @@ def give_list():
     rkp = int(request.form['rkp'])
     members = db.session.query(Member).all()
     names = names.split(", ")
+    print(names)
+    print(find_ids(names))
     for n in names:
+        print(n)
+        for m in db.session.query(Member).all():
+            print(m.name)
         db.session.query(Member).filter(Member.name == n).first().rkp += rkp
         db.session.query(Member).filter(Member.name == n).first().latest = msg
         db.session.query(Member).filter(Member.name == n).first().change = rkp
-        message = Message(n, msg, db.session.query(Member).filter(Member.name == n).index)
+        message = Message(n, msg, db.session.query(Member).filter(Member.name == n).first().index)
         message.rkp = rkp
         db.session.add(message)
-    db.session.commit()
-    db.session.flush()
+        db.session.commit()
+        db.session.flush()
+        print("Ended")
     dir = 'logs'
 
     if not os.path.exists(dir):
