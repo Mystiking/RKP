@@ -11,11 +11,16 @@ db = SQLAlchemy(app)
 
 @app.route('/', methods=['GET'])
 def list_members():
-    temp = db.session.query(Member).order_by(Member.rkp).all()
-    position = len(temp)
+    temp = db.session.query(Member).order_by(Member.rkp.desc()).all()
+    position = 1
+    max_points = db.session.query(Member).filter(temp[0].index == Member.index).first().rkp
     for m in temp:
-        db.session.query(Member).filter(m.index == Member.index).first().pos = position
-        position -= 1
+        current = db.session.query(Member).filter(m.index == Member.index).first().rkp
+        if (current < max_points):
+            position += 1
+            db.session.query(Member).filter(m.index == Member.index).first().pos = position
+        else:
+            db.session.query(Member).filter(m.index == Member.index).first().pos = position        
     members = db.session.query(Member).order_by(Member.pos).all()
     if 'name' in session:
         return render_template('startPage.html', members=members, unknown=0)
