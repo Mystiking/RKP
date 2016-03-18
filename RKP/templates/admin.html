@@ -1,128 +1,144 @@
-!<DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <link rel="icon" href="/static/css/dragon-fav.png">
-    <title>RKP</title>
-    <style></style>
-</head>
-
-
-<body background="/static/css/bg_cont_2.jpg" >
-
-                <a class="navbar-brand" style="position: absolute; left: 10px; top: -15px" href="/">
-                    <img src="static/css/mortal-kombat-x-dragon.png" width="50px%" height="50px">
-                </a>
-               
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content%}
+{% block navbar %}
+{% endblock %}
 <br>
 
-<div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <FONT color="white">
-                <div class="container">
-                        <div class="row" style="margin-top: 50px">
-                            <div class="container col-md-12">
-                                      <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                          <h1>
-                                            Rus Kill Point
-                                          </h1>
-                                        <table class="table" id="members">
-                                          <thead>
-                                              <tr>
-                                                   <th width=10%>Name</th>
-                                                   <th width=50%>Reason</th>
-                                                   <th>Points</th>
-                                                   <th>Add</th>
-                                                   <th>Total</th>
-                                                   <th>Delete</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody>
-                                            {% for m in members %}
-                                               <tr>
-                                                   <td>
-                                                       {{ m.name }}
-                                                   </td>
-                                                   <form id="m{{ m.index }}" method="post" action="/give_rkp">
-                                                   <td>
-                                                       <input id="reason" type="text" class="form-control" name="reason" value="" placeholder="Reason">
-                                                   </td>
-                                                   <td>
-                                                       <input id="amount" type="text" class="form-control" name="amount" value="" placeholder="Amount">
-                                                       <input id="hidden" type="hidden" value="{{ m.index }}" name="hidden">
-                                                   </td>
-                                                       <td>
-                                                           <button type="submit" class="btn btn-primary">RKP</button>
-                                                       </td>
-                                                   </form>
-                                                   <td>
-                                                       {{ m.rkp }}
-                                                   </td>
-                                                   <td>
-                                                       <form id="d{{ m.index }}" method="post" action="/delete_member">
-                                                           <input id="del" type="hidden" name="del" value="{{ m.index }}">
-                                                           <button type="submit" class="btn btn-primary">Delete</button>
-                                                       </form>
-                                                   </td>
-                                               </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                      </div>
-                                </div>
-                        </div>
-                    </div>
-                </FONT>
+<div class="container row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h1>Rus Kill Point</h1></div>
+            <table class="table" id="members">
+                <thead>
+                    <tr>
+                        <th width=10%>Name</th>
+                        <th width=50%>Reason</th>
+                        <th>Points</th>
+                        <th>Add</th>
+                        <th>Total</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in members %}
+                    <tr>
+                        <td>
+                            {{ m.name }}
+                        </td>
+                        <form id="m{{ m.index }}" method="post" action="/give_rkp">
+                            <td>
+                                <input id="reason" type="text" class="form-control" name="reason" value="" placeholder="Reason">
+                            </td>
+                            <td>
+                                <input id="amount" type="text" class="form-control" name="amount" value="" placeholder="Amount">
+                                <input id="hidden" type="hidden" value="{{ m.index }}" name="hidden">
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary">RKP</button>
+                            </td>
+                        </form>
+                        <td>
+                            {{ m.rkp }}
+                        </td>
+                        <td>
+                            <form id="d{{ m.index }}" method="post" action="/delete_member">
+                                <input id="del" type="hidden" name="del" value="{{ m.index }}">
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="container row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>Add member</h1></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width=40%>Name</th>
+                            <th width=40%>RKP</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <form method="post" action="/add_member">
+                                <td>
+                                    <input id="member" type="text" class="form-control" name="member" value="" placeholder="Name">
+                                </td>
+                                <td>
+                                    <input id="rkp" type="text" class="form-control" name="rkp" value="" placeholder="RKP">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary">Add member</button>
+                                </td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-<div class="container">
-        <div class="row" style="margin-top: 50px">
-            <div class="container col-md-10">
-                <h1> Add member </h1>
-                <div class="container">
-                    <form method="post" action="/add_member">
-                        <input id="member" type="text" class="form-control" name="member" value="" placeholder="Name">
-                        <br>
-                        <input id="rkp" type="text" class="form-control" name="rkp" value="" placeholder="RKP">
-                        <br>
-                        <button type="submit" class="btn btn-primary">Add member</button>
-                    </form>
+    <div class="container row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>List tests</h1></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width=40%>Names</th>
+                            <th width=40%>Reason</th>
+                            <th>RKP</th>
+                            <th>Give points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+
+                            <form method="post" action="/give_list_rkp">
+                                <td>
+                                    <input id="names" type="text" class="form-control" name="names" value="" placeholder="Names">
+                                </td>
+                                <td>
+                                    <input id="reason" type="text" class="form-control" name="reason" value="" placeholder="Reason">
+                                </td>
+                                <td>
+                                    <input id="rkp" type="text" class="form-control" name="rkp" value="" placeholder="RKP">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary">Give points</button>
+                                </td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row" style="margin-top: 50px">
-            <div class="container col-md-10">
-                <h1> LIST TEST </h1>
-                <div class="container">
-                    <form method="post" action="/give_list_rkp">
-                        <input id="names" type="text" class="form-control" name="names" value="" placeholder="Names">
-                        <br>
-                        <input id="reason" type="text" class="form-control" name="reason" value="" placeholder="Reason">
-                        <br>
-                        <input id="rkp" type="text" class="form-control" name="rkp" value="" placeholder="RKP">
-                        <br>
-                        <button type="submit" class="btn btn-primary">Give points<button>
+
+    <div class="container row">
+        <div class="col-md-2">
+            <div class="panel panel-default">
+                <br>
+                <div style="margin-left:18px">
+                    <form id="load_members" method="post" action="/load_members">
+ 	                <button type="submit" class="btn btn-primary">Load medlemmer</button>
                     </form>
                 </div>
+                <br>
             </div>
         </div>
     </div>
- 
- <form id="load_members" method="post" action="/load_members">
- 	<button type="submit" class="btn btn-primary">Load medlemmer</button>
- </form>
-</body>
-</html>
+ {% endblock %}
 
 <!-- The icon for the play button was created by Freepik from flaticon.com-->
 <!-- The icon for the play_1 button was created by Yannick from flaticon.com-->
