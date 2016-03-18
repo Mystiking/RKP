@@ -11,16 +11,74 @@ db = SQLAlchemy(app)
 
 @app.route('/', methods=['GET'])
 def list_members():
-    temp = db.session.query(Member).order_by(Member.rkp).all()
-    position = len(temp)
+    temp = db.session.query(Member).order_by(Member.rkp.desc()).all()
+    position = 1
+    max_points = db.session.query(Member).filter(temp[0].index == Member.index).first().rkp
     for m in temp:
-        db.session.query(Member).filter(m.index == Member.index).first().pos = position
-        position -= 1
+        current = db.session.query(Member).filter(m.index == Member.index).first().rkp
+        if (current < max_points):
+            position += 1
+            db.session.query(Member).filter(m.index == Member.index).first().pos = position
+        else:
+            db.session.query(Member).filter(m.index == Member.index).first().pos = position        
     members = db.session.query(Member).order_by(Member.pos).all()
     if 'name' in session:
         return render_template('startPage.html', members=members, unknown=0)
     else:
         return render_template('startPage.html', members=members, unknown=1)
+
+@app.route('/rkp', methods=['GET'])
+def follow_the_rules():
+    return render_template('rules.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def log_in():
+    password = request.form['password']
+    if password != 'RKPdealer':
+        return redirect('/')
+    else:
+        members = db.session.query(Member).order_by(Member.name).all()
+        return render_template('admin.html', members=members)
+
+
+
+@app.route('/login_user', methods=['GET', 'POST'])
+def log_in_user():
+    if request.method == 'POST':
+        name = request.form['username']
+        password = request.form['password']
+        user = db.session.query(User).filter(User.name == name).first()
+        if user and user.check_pass(password):
+            session['name'] = name
+            return redirect('/')
+    return render_template('login.html',
+                           backname='Back to signup',
+                           backlink='signup.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    if 'name' in session:
+        del session['name']
+    return redirect('/')
+
+
+@app.route('/go_to', methods=['POST', 'GET'])
+def go_to():
+    name = request.form['name'].lower()
+    pos = int(request.form['position'])
+    key = int(request.form['id'])
+    print(pos)
+    if pos == 1:
+        picture = '/static/css/medlemmer/' + name + '/gold_border_' + name + '.png'
+    elif pos == 2:
+        picture = '/static/css/medlemmer/' + name + '/silver_border_' + name + '.png'
+    else:
+        picture = '/static/css/medlemmer/' + name + '/' + name + '.png'
+    name = name[0].upper() + name[1:]
+    messages = db.session.query(Message).filter(Message.key == key).order_by(Message.index).all()
+    return render_template('/members/member.html', messages=messages, name=name, picture=picture)
 
 @app.route('/load_members', methods=['GET', 'POST'])
 def load_m():
@@ -38,21 +96,6 @@ def load_m():
     db.session.flush()
     members = db.session.query(Member).order_by(Member.name).all()
     return render_template('admin.html', members=members)
-
-@app.route('/rkp', methods=['GET'])
-def follow_the_rules():
-    return render_template('rules.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def log_in():
-    password = request.form['password']
-    if password != 'RKPdealer':
-        return redirect('/')
-    else:
-        members = db.session.query(Member).order_by(Member.name).all()
-        return render_template('admin.html', members=members)
-
 
 @app.route('/give_list_rkp', methods=['GET', 'POST'])
 def give_list():
@@ -139,58 +182,6 @@ def add_member():
         f.write(name + '\n')
     return render_template('admin.html', members=members)
 
-
-@app.route('/login_user', methods=['GET', 'POST'])
-def log_in_user():
-    if request.method == 'POST':
-        name = request.form['username']
-        password = request.form['password']
-        user = db.session.query(User).filter(User.name == name).first()
-        if user and user.check_pass(password):
-            session['name'] = name
-            return redirect('/')
-    return render_template('login.html',
-                           backname='Back to signup',
-                           backlink='signup.html')
-
-
-@app.route('/signup', methods=['GET', 'POST'])
-def sign_up():
-    if request.method == 'POST':
-        name = request.form['username']
-        password = request.form['password']
-        if not db.session.query(User).filter(User.name == name).first():
-            db.session.add(User(name, password))
-            db.session.commit()
-            return redirect('/login_user')
-    return render_template('signup.html')
-
-
-@app.route('/logout', methods=['GET', 'POST'])
-def logout():
-    if 'name' in session:
-        del session['name']
-    return redirect('/')
-
-
-@app.route('/go_to', methods=['POST', 'GET'])
-def go_to():
-    name = request.form['name'].lower()
-    pos = int(request.form['position'])
-    key = int(request.form['id'])
-    print(pos)
-    if pos == 1:
-        picture = '/static/css/medlemmer/' + name + '/gold_border_' + name + '.png'
-    elif pos == 2:
-        picture = '/static/css/medlemmer/' + name + '/silver_border_' + name + '.png'
-    else:
-        picture = '/static/css/medlemmer/' + name + '/' + name + '.png'
-    name = name[0].upper() + name[1:]
-    messages = db.session.query(Message).filter(Message.key == key).order_by(Message.index).all()
-    return render_template('/members/member.html', messages=messages, name=name, picture=picture)
-
-
-
 @app.route('/delete_member', methods=['POST', 'GET'])
 def delete_member():
     index = int(request.form['del'])
@@ -198,6 +189,7 @@ def delete_member():
     db.session.commit()
     members = db.session.query(Member).order_by(Member.pos).all()
     return render_template('admin.html', members=members)
+
 
 
 if __name__ == '__main__':
