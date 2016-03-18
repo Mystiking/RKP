@@ -16,11 +16,13 @@ def list_members():
     try:
         max_points = db.session.query(Member).filter(temp[0].index == Member.index).first().rkp
     except:
+        max_points = 0
         pass
     for m in temp:
         current = db.session.query(Member).filter(m.index == Member.index).first().rkp
         if (current < max_points):
             position += 1
+            max_points = current
             db.session.query(Member).filter(m.index == Member.index).first().pos = position
         else:
             db.session.query(Member).filter(m.index == Member.index).first().pos = position        
