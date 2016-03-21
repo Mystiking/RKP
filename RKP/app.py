@@ -4,8 +4,8 @@ from schema import *
 import datetime, os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.secret_key = 'Ultra secret invisible super secret key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://frede:sleed@localhost/mySQL_app'
+app.config['SECRET_KEY'] = 'spice girls are so cool'
 db = SQLAlchemy(app)
 
 
@@ -40,7 +40,7 @@ def follow_the_rules():
 @app.route('/login', methods=['GET', 'POST'])
 def log_in():
     password = request.form['password']
-    if password != 'RKPdealer':
+    if password != 'fisse':
         return redirect('/')
     else:
         members = db.session.query(Member).order_by(Member.name).all()

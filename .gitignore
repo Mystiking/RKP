@@ -1,6 +1,8 @@
+.gitignore
 *.iml
 *.idea/
 app.db
 __pycache__/*
 members.txt
 logs/*
+venv*
