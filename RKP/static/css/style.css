@@ -1,0 +1,42 @@
+body {
+    margin: 0px;
+}
+
+#header {
+    margin: auto;
+    width: 85%;
+    height: 180px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+background:
+linear-gradient(135deg, #FFEB3D 25%, transparent 25%) -50px 0,
+linear-gradient(225deg, #FFEB3D 25%, transparent 25%) -50px 0,
+linear-gradient(315deg, #FFEB3D 25%, transparent 25%),
+linear-gradient(45deg, #FFEB3D 25%, transparent 25%);
+background-size: 100px 100px;
+background-color: #FFCF30;
+}
+
+#navbar {
+    top: 180px;
+    margin: auto;
+    height: 50px;
+    width: 85%;
+    border: 1px solid black;
+    background-color: white;
+    box-shadow: 0px 5px 0px #d3d3d3;
+}
+
+.fall {
+    margin: auto;
+    vertical-align: middle;
+    display:none;
+    height: 140px;
+    width: 340px;
+    padding-top: 20px;
+    line-height: 120pt;
+    font-family: 'Mikado';
+    color: black;
+    font-size: 120pt;
+    text-shadow: 3px 3px #ff0000;
+}

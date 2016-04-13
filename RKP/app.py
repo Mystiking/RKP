@@ -25,12 +25,19 @@ def list_members():
             max_points = current
             db.session.query(Member).filter(m.index == Member.index).first().pos = position
         else:
-            db.session.query(Member).filter(m.index == Member.index).first().pos = position        
+            db.session.query(Member).filter(m.index == Member.index).first().pos = position
     members = db.session.query(Member).order_by(Member.pos).all()
     if 'name' in session:
         return render_template('startPage.html', members=members, unknown=0)
     else:
         return render_template('startPage.html', members=members, unknown=1)
+
+
+# test
+@app.route('/hue', methods=['GET'])
+def hue():
+    return render_template('new/index.html')
+# test
 
 @app.route('/rkp', methods=['GET'])
 def follow_the_rules():
@@ -45,7 +52,6 @@ def log_in():
     else:
         members = db.session.query(Member).order_by(Member.name).all()
         return render_template('admin.html', members=members)
-
 
 
 @app.route('/login_user', methods=['GET', 'POST'])
@@ -85,6 +91,7 @@ def go_to():
     messages = db.session.query(Message).filter(Message.key == key).order_by(Message.index).all()
     return render_template('/members/member.html', messages=messages, name=name, picture=picture)
 
+
 @app.route('/load_members', methods=['GET', 'POST'])
 def load_m():
     names = db.session.query(Member).order_by(Member.pos).all()
@@ -101,6 +108,7 @@ def load_m():
     db.session.flush()
     members = db.session.query(Member).order_by(Member.name).all()
     return render_template('admin.html', members=members)
+
 
 @app.route('/give_list_rkp', methods=['GET', 'POST'])
 def give_list():
@@ -138,7 +146,6 @@ def give_list():
                 log.write("Message: " + msg.msg + " RKP : " + str(msg.rkp) + '\n')
     log.close()
     return render_template('admin.html', members=members)
-
 
 
 @app.route('/give_rkp', methods=['GET', 'POST'])
@@ -191,6 +198,7 @@ def add_member():
         f.write(name + '\n')
     return render_template('admin.html', members=members)
 
+
 @app.route('/delete_member', methods=['POST', 'GET'])
 def delete_member():
     index = int(request.form['del'])
@@ -199,7 +207,44 @@ def delete_member():
     members = db.session.query(Member).order_by(Member.pos).all()
     return render_template('admin.html', members=members)
 
+# RKGNSKAB
+
+@app.route('/change_balance', methods=['POST', 'GET'])
+def change_balance():
+    id = int(request.form['hidden'])
+    reason = request.form['reason']
+    change = int(request.form['amount'])
+
+    # Fetch members from the database
+    members = db.session.query(Member).order_by(Member.name).all()
+
+    # Filter the member by id and change balance
+    db.session.query(Member).filter(Member.index == id).first().balance += change
+
+    # Create an balance action in the database
+    action = Balance_action(db.session.query(Member).filter(Member.index == id).first().name, reason, id, change)
+    db.session.add(action)
+    db.session.commit()
+    db.session.flush()
+
+    return render_template('admin.html', members=members)
 
 
 if __name__ == '__main__':
     app.run(port=1315, debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #
